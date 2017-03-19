@@ -7,7 +7,7 @@ class List {
     }
 
     get(address) {
-        return this.memory[add]
+        return this.memory[address]
     }
 
     push(value) {
@@ -52,12 +52,10 @@ class List {
             this.memory[address] = this.memory[address + 1];
         }
 
-        // Delete the last tiem since it is now in the previous address
+        // Delete the last item since it is now in the previous address
         delete this.memory[this.length - 1];
         this.length--;
     }
 }
-
-
 
 
