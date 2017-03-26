@@ -128,7 +128,7 @@ class Stack {
 
 class Queue {
 
-    constructor {
+    constructor() {
         this.list = [];
         this.legnth = 0;
     }
@@ -149,3 +149,40 @@ class Queue {
         return this.list[0];
     }
 }
+
+class Graph {
+    // an array to store references to everything
+    
+    constructor() {
+        this.nodes = [];
+    }
+
+    addNode(value) {
+        return this.nodes.push({value, lines: []})
+    }
+
+    find(value) {
+        return this.nodes.find(node => {
+            return node.value === value;
+        });
+    }
+
+    addLine(startValue, endValue) {
+        // Find the nodes for each value
+        let startNode = this.find(startValue);
+        let endNode = this.find(endValue);
+
+        // throw error if not found
+        if (!startNode || !endNode) {
+            throw new Error('Both nodes need to exist');
+        }
+
+        startNode.lines.push(endNode);
+    }
+}
+
+var graph = new Graph();
+graph.addNode(1);
+graph.addNode(2);
+graph.addLine(1, 2);
+var two = graph.find(1).lines[0];
