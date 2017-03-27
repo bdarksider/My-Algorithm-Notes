@@ -186,3 +186,63 @@ graph.addNode(1);
 graph.addNode(2);
 graph.addLine(1, 2);
 var two = graph.find(1).lines[0];
+
+// Linked List
+class LinkedList {
+
+    constructor() {
+        this.head = null;
+        this.length = 0;
+    }
+
+    get(position) {
+        if (position >= this.length) {
+            throw new Error('Position outside of list range');
+        }
+
+        // Start with the head of the list
+        let current = this.head;
+
+        for (let index = 0; index < position; index++) {
+            current = current.next;
+        }
+
+        // return the node
+        return current;
+    }
+
+    add(value, position) {
+        // create a node to hold value
+        let node = {value, next: null};
+
+        if (position === 0) {
+            node.next = this.head;
+            this.head = node;
+        } else {
+            let prev = this.get(position -1);
+            let current = prev.next;
+
+            node.next = current;
+            prev.next = node;
+        }
+
+        this.length++;
+    }
+
+    remove(position) {
+        if(!this.head) {
+            throw new Error('Removing from empty list');
+        }
+
+        // If we need to remove first node, simply set the head to
+        // the next node in the chain
+        if (position === 0) {
+            this.head = this.head.next;
+        } else {
+            let prev = this.get(position -1);
+            prev.next = prev.next.next;
+        }
+
+        this.length--;
+    }
+}
