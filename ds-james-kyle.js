@@ -19,7 +19,7 @@ class List {
         if (this.length === 0) return;
 
         // Get the last value, stop storing it, return it.
-        let lastAddress = this.length -1;
+        let lastAddress = this.length - 1;
         let value = this.memory[lastAddress];
         delete this.memory[lastAddress];
         this.length--;
@@ -44,7 +44,7 @@ class List {
 
     shift() {
         // don't do anything if we don't have any items
-        if(this.length === 0) return;
+        if (this.length === 0) return;
 
         let value = this.memory[0];
 
@@ -72,7 +72,7 @@ class HashTable {
     // hashing
     // hashKey("abc") => 93233
     // hashKey("xyz") => 123213
-    
+
     hashKey(key) {
         let hash = 0;
         for (let index = 0; index < key.length; index++) {
@@ -152,13 +152,13 @@ class Queue {
 
 class Graph {
     // an array to store references to everything
-    
+
     constructor() {
         this.nodes = [];
     }
 
     addNode(value) {
-        return this.nodes.push({value, lines: []})
+        return this.nodes.push({ value, lines: [] })
     }
 
     find(value) {
@@ -213,24 +213,23 @@ class LinkedList {
 
     add(value, position) {
         // create a node to hold value
-        let node = {value, next: null};
+        let node = { value, next: null };
 
         if (position === 0) {
             node.next = this.head;
             this.head = node;
         } else {
-            let prev = this.get(position -1);
+            let prev = this.get(position - 1);
             let current = prev.next;
 
             node.next = current;
             prev.next = node;
         }
-
         this.length++;
     }
 
     remove(position) {
-        if(!this.head) {
+        if (!this.head) {
             throw new Error('Removing from empty list');
         }
 
@@ -239,10 +238,116 @@ class LinkedList {
         if (position === 0) {
             this.head = this.head.next;
         } else {
-            let prev = this.get(position -1);
+            let prev = this.get(position - 1);
             prev.next = prev.next.next;
         }
 
         this.length--;
+    }
+}
+
+class Tree {
+
+    // The tree has to start with a single parent, the "root" of the tree
+    constructor() {
+        this.root = null;
+    }
+
+    traverse(callback) {
+        // walk function that calls recursively on every node 
+        function walk(node) {
+
+            callback(node);
+
+            node.children.forEach(walk);
+        }
+
+        walk(this.root);
+    }
+
+    add(value, parentValue) {
+        let newNode = { value, children: [] };
+
+        if (this.root === null) {
+            this.root = newNode;
+            return;
+        }
+
+        this.traverse(node => {
+            if (node.value === parentValue) {
+                node.children.push(newNode);
+            }
+        });
+    }
+}
+
+class BinarySearchTree {
+    // root for BST
+    constructor() {
+        this.root = null;
+    }
+
+    contains(value) {
+        let current = this.root;
+
+        // We're going to keep running as long as we have another node to visit.
+        // If we reach a `left` or `right` that is `null` then this loop ends.
+        while (current) {
+            // If the value is greater than current.value, move to the right
+            if (value > current.value) {
+                current = current.right;
+
+            // If the value is less than the current.value, move to the left
+            } else if (value < current.value) {
+                current = current.left;
+            // Otherwise it must be equal values and return true
+            } else {
+                return true;
+            }
+
+        }
+        // If we havn't matched anything then we return false.
+        return false;
+    }
+
+    add(value) {
+        let node = {
+            value: value,
+            left: null,
+            right: null
+        };
+
+        // Special case for when there isn't any root node and we just need to add one.
+        if (this.root === null) {
+            this.root = node;
+            return;
+        }
+
+        // start at the root
+        let current = this.root;
+
+        while (true) {
+            if (value > current.value) {
+                // if `right` doesn't exist, set it to our node, and stop traversing.
+                if (!current.right) {
+                    current.right = node;
+                    break;
+                }
+
+                // Otherwise move to the right node.
+                current = current.right;
+            } else if (value < current.value) {
+                if (!current.left) {
+                    current.left = node;
+                    break;
+                }
+
+                current = current.left;
+            // If the number isn't less than or greater, then it must be the same
+            // and we dont' do anything.
+            } else {
+                break;
+            }
+        }
     }
 }
